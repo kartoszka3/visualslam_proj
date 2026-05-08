@@ -56,6 +56,15 @@ def match_features(des1, des2, kp1, kp2):
     
     return np.int32(pts1), np.int32(pts2)
 
+def select_Frames(video_path, frame_gap=10):
+    ###TODO weź film, wybierz co frame_gap klatkę i zwróć macierz tych klatek
+    return 0
+
+def o3d_visualization(points, recovery, translation):
+    ###TODO weź macierze transformacji i wyświetl trajektorie + macierz punktów w 3D za pomocą open3d
+    return 0
+
+
 def pipeline(video_file):
     K, dist = get_camera_matrix_simple(video_file)
     print("Camera Matrix K:\n", K)
