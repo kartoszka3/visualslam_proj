@@ -56,9 +56,7 @@ def match_features(des1, des2, kp1, kp2):
     
     return np.int32(pts1), np.int32(pts2)
 
-if __name__ == "__main__":
-    video_file = "WIN_20260427_15_35_38_Pro.mp4"
-    
+def pipeline(video_file):
     K, dist = get_camera_matrix_simple(video_file)
     print("Camera Matrix K:\n", K)
     print("Distortion Coefficients:\n", dist)
@@ -104,10 +102,8 @@ if __name__ == "__main__":
     
     print(f"\n3D Points: {pts3D.shape}")
     print(f"Translation: {t.flatten()}")
-    
-    ax = plt.figure().add_subplot(111, projection='3d')
-    ax.scatter(pts3D[:, 0], pts3D[:, 1], pts3D[:, 2], s=1)
-    ax.set_title("3D Reconstruction")
-    plt.show()
-    
 
+if __name__ == "__main__":
+    video_file = "WIN_20260427_15_35_38_Pro.mp4"
+    pipeline(video_file)
+    
