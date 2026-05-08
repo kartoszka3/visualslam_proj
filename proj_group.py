@@ -56,17 +56,32 @@ def match_features(des1, des2, kp1, kp2):
     
     return np.int32(pts1), np.int32(pts2)
 
-def select_Frames(video_path, frame_gap=10):
-    ###TODO weź film, wybierz co frame_gap klatkę i zwróć macierz tych klatek
-    return 0
+def select_frames(video_path, frame_gap=10):
+    cap = cv2.VideoCapture(video_path)
+    frames = []
+    frame_count = 0
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        if frame_count % frame_gap == 0:
+            frames.append(frame)
+        
+        frame_count += 1
+    
+    cap.release()
+    
+    return np.array(frames)
 
 def o3d_visualization(points, recovery, translation):
     ###TODO weź macierze transformacji i wyświetl trajektorie + macierz punktów w 3D za pomocą open3d
     return 0
 
 
-def pipeline(video_file):
-    K, dist = get_camera_matrix_simple(video_file)
+def pipeline(frames):
+    K, dist = get_camera_matrix_simple(frames[0])
     print("Camera Matrix K:\n", K)
     print("Distortion Coefficients:\n", dist)
     
@@ -103,8 +118,8 @@ def pipeline(video_file):
     P2 = K @ np.hstack([R, t])
     
     # Konwertuj na float32
-    pts1_inliers = pts1[mask.ravel() == 1].astype(np.float32)
-    pts2_inliers = pts2[mask.ravel() == 1].astype(np.float32)
+    pts1_inliers = pts1[mask.ravel() > 0].astype(np.float32)
+    pts2_inliers = pts2[mask.ravel() > 0].astype(np.float32)
     
     pts4D_hom = cv2.triangulatePoints(P1, P2, pts1_inliers.T, pts2_inliers.T)
     pts3D = (pts4D_hom[:3, :] / pts4D_hom[3, :]).T
@@ -114,5 +129,6 @@ def pipeline(video_file):
 
 if __name__ == "__main__":
     video_file = "WIN_20260427_15_35_38_Pro.mp4"
-    pipeline(video_file)
+    frames = select_frames(video_file)
+    pipeline(frames)
     
