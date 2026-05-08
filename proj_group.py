@@ -57,7 +57,7 @@ def match_features(des1, des2, kp1, kp2):
     return np.int32(pts1), np.int32(pts2)
 
 if __name__ == "__main__":
-    video_file = r"C:\uni\6sem\widzmasz\WIN_20260427_15_35_38_Pro.mp4"
+    video_file = "WIN_20260427_15_35_38_Pro.mp4"
     
     K, dist = get_camera_matrix_simple(video_file)
     print("Camera Matrix K:\n", K)
